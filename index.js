@@ -11,8 +11,9 @@ bot.on('ready', () => {
 
 })
 bot.on('message', async message => {
-    let gameAPIdata = await (await fetch('https://api.prodigygame.com/game-api/status')).json()
-     let version = gameAPIdata.data.prodigyGameFlags.gameDataVersion
+    const gameFetch = await fetch("https://play.prodigygame.com/play");
+    const gameStatus = JSON.parse((await gameFetch.text()).match(/(?<=gameStatusDataStr = ').+(?=')/)?.[0]);
+    let version = gameStatus.prodigyGameFlags.gameDataVersion
     let prodigydata = await (await fetch(`https://cdn.prodigygame.com/game/data/production/${version}/data.json`)).json()
     let bootdata = prodigydata.boots
     let hatdata = prodigydata.hat
